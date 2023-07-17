@@ -1,0 +1,52 @@
+<%- include('../partials/header') %>
+
+<h2>Flight Details</h2>
+
+<table>
+  <tr>
+    <th>Airline</th>
+    <td><%= flight.airline %></td>
+  </tr>
+  <tr>
+    <th>Airport</th>
+    <td><%= flight.airport %></td>
+  </tr>
+  <tr>
+    <th>Flight No</th>
+    <td><%= flight.flightNo %></td>
+  </tr>
+  <tr>
+    <th>Departs</th>
+    <td><%= flight.departs.toLocaleDateString() %></td>
+  </tr>
+  <% flight.destinations.forEach(destination => { %>
+    <tr>
+      <th>Destination Airport</th>
+      <td><%= destination.airport %></td>
+    </tr>
+    <tr>
+      <th>Arrival</th>
+      <td><%= destination.arrival.toLocaleString() %></td>
+    </tr>
+  <% }); %>
+</table>
+
+<h2>Add Destination</h2>
+
+<form action="/flights/<%= flight._id %>/destinations" method="POST">
+  <label for="airport">Airport:</label>
+  <select name="airport" id="airport">
+    <option value="AUS">AUS</option>
+    <option value="DFW">DFW</option>
+    <option value="DEN">DEN</option>
+    <option value="LAX">LAX</option>
+    <option value="SAN">SAN</option>
+  </select>
+  <br>
+  <label for="arrival">Arrival Date/Time:</label>
+  <input type="datetime-local" name="arrival" id="arrival" required>
+  <br>
+  <input type="submit" value="Add Destination">
+</form>
+
+<%- include('../partials/footer') %>

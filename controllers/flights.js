@@ -3,14 +3,18 @@ const Flight = require('../models/flight');
 module.exports = {
     new: newFlight,
     create,
-    index
+    index,
+    show,
 };
 
+async function show(req, res) {
+  const flight = await Flight.findById(req.params.id);
+  res.render('flights/show', { title: 'Flight Details', flight });
+}
+
 async function index(req, res) {
-    const flights = await Flight.find ({})
-    res.render('flights/index', {
-        flights
-    })
+  const flights = await Flight.find({});
+  res.render('flights/index', { flights });
 }
 
 function newFlight(req, res) {
@@ -22,7 +26,7 @@ function newFlight(req, res) {
   
     try {
       await Flight.create(req.body);
-      res.redirect('/flights/new');
+      res.redirect('/flights/');
     } catch (err) {
       console.error(err);
       res.render('flights/new', { errorMsg: err.message });
