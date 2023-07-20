@@ -8,27 +8,34 @@ module.exports = {
 };
 
 async function show(req, res) {
-  const flight = await Flight.findById(req.params.id);
-  res.render('flights/show', { title: 'Flight Details', flight });
+  try {
+    const flight = await Flight.findById(req.params.id).populate('tickets');
+    res.render('flights/show', { title: 'Flight Details', flight });
+  } catch (error) {
+    res.render('error', { message: error.message });
+  }
 }
 
 async function index(req, res) {
-  const flights = await Flight.find({});
-  res.render('flights/index', { flights });
+  try {
+    const flights = await Flight.find({});
+    res.render('flights/index', { flights });
+  } catch (error) {
+    res.render('error', { message: error.message });
+  }
 }
 
 function newFlight(req, res) {
-    res.render('flights/new', { errorMsg: '' });
-  }
+  res.render('flights/new', { errorMsg: '' });
+}
 
-  async function create(req, res) {
-    req.body.flightNo = parseInt(req.body.flightNo);
-  
-    try {
-      await Flight.create(req.body);
-      res.redirect('/flights/');
-    } catch (err) {
-      console.error(err);
-      res.render('flights/new', { errorMsg: err.message });
-    }
+async function create(req, res) {
+  req.body.flightNo = parseInt(req.body.flightNo);
+
+  try {
+    await Flight.create(req.body);
+    res.redirect('/flights/');
+  } catch (error) {
+    res.render('flights/new', { errorMsg: error.message });
   }
+}

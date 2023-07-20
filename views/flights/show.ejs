@@ -31,6 +31,17 @@
   <% }); %>
 </table>
 
+<a href="/flights/<%= flight._id %>/tickets/new" class="btn btn-primary">New Ticket</a>
+
+
+<h3>Tickets</h3>
+<ul>
+  <% flight.tickets.forEach(function(ticket) { %>
+    <li>Seat: <%= ticket.seat %>, Price: <%= ticket.price %></li>
+  <% }); %>
+</ul>
+
+
 <h2>Add Destination</h2>
 
 <form action="/flights/<%= flight._id %>/destinations" method="POST">

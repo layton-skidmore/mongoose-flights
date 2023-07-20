@@ -5,12 +5,12 @@ module.exports = {
 }
 
 async function create(req, res) {
+  try {
     const flight = await Flight.findById(req.params.id);
     flight.destinations.push(req.body);
-    try {
-        await flight.save();
-      } catch (err) {
-        console.log(err);
-      }
+    await flight.save();
     res.redirect(`/flights/${flight._id}`);
+  } catch (error) {
+    res.render('error', { message: error.message });
   }
+}
